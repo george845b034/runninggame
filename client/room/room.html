@@ -1,0 +1,37 @@
+
+<template name="room">
+    <div class="row">
+        <div class="col-md-3">
+            局名稱:<input type="text" class="form-controller" data="roomname"/>
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-primary" id="newroom">新局</button>
+        </div>
+        <div class="col-md-4 text-right">
+    		<label class="control-label">{{currentUser.username}}</label>
+    		{{>logout}}
+        </div>
+    </div>
+    <div class="row">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>局名稱</th>
+                    <th>設局人</th>
+                    <th>加入</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each getRooms}}
+                    <tr>
+                        <th scope="row">{{getCount}}</th>
+                        <td>{{name}}</td>
+                        <td>{{ getOwner owner}}</td>
+                        <td><button class="btn btn-default joinroom" >加入</button></td>
+                    </tr>
+                {{/each}}
+            </tbody>  
+        </table>
+    </div>
+</template>
