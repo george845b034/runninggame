@@ -1,0 +1,31 @@
+
+<template name="dialog_rooms">
+    {{#if isDialog}}
+    <div class="modal fade in" style="display: block;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">開局中...</h4>
+                </div>
+                <div class="modal-body">
+                    {{#each getCurrentRoom}}
+                    <div class="row">
+                        <div class="col-md-2">
+                            參加者:
+                        </div>
+                        <div class="col-md-6">
+                            {{getOwner this}}
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary begin">開始</button>
+                    <button type="button" class="btn btn-danger leave" data-leave="{{isDialog.[0]._id}}">離開</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade in"></div>
+    {{/if}}
+</template>

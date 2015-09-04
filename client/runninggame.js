@@ -1,5 +1,6 @@
-if (Meteor.isClient) {
+if(Meteor.isClient){
     Meteor.subscribe('users');
+    Meteor.subscribe('rooms');
   // counter starts at 0
   // Session.setDefault('counter', 0);
 
