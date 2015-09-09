@@ -28,7 +28,13 @@
                         <th scope="row">{{getCount}}</th>
                         <td>{{name}}</td>
                         <td>{{ getOwner owner}}</td>
-                        <td><button class="btn btn-default joinroom" >加入</button></td>
+                        <td>
+                            {{#if isStatus status}}
+                                <button class="btn btn-default joinroom" data-join="{{_id}}">加入</button>
+                            {{else}}
+                                進行中
+                            {{/if}}
+                        </td>
                     </tr>
                 {{/each}}
             </tbody>  

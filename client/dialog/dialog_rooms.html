@@ -20,7 +20,9 @@
                     {{/each}}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary begin">開始</button>
+                    {{#if isOwner isDialog.[0].owner}}
+                        <button type="button" class="btn btn-primary begin" data-begin="{{isDialog.[0]._id}}">開始</button>
+                    {{/if}}
                     <button type="button" class="btn btn-danger leave" data-leave="{{isDialog.[0]._id}}">離開</button>
                 </div>
             </div>

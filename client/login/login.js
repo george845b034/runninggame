@@ -17,10 +17,13 @@ Template.register.events({
 		var email = $('input[data="email"]').val();
 		var password = $('input[data="password"]').val();
 
+		var defaultPercent = {percent: 0};
+
 		Accounts.createUser({
             username: username,
             email: email,
-            password: password
+            password: password,
+            profile: defaultPercent
         }, function(error){
         	if(error != undefined)
 			{

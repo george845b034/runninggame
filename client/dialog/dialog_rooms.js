@@ -1,13 +1,24 @@
 Template.dialog_rooms.helpers({
 	isDialog: function () {
-		return Rooms.find({$or:[{users:{$in:[Meteor.userId()]}}, {owner:Meteor.userId()}]}).fetch();
+		var result = Rooms.find({$or:[{users:{$in:[Meteor.userId()]}}, {owner:Meteor.userId()}]}).fetch();
+		// console.log(result.length > 0 && result[0].status == "begin");
+		if(result.length > 0 && result[0].status == "begin")
+		{
+			Router.go( 'game', { _id: result[0]._id} );
+		}else{
+			return result;
+		}
+	},
+	isOwner: function ( inOwnerId ) {
+		return inOwnerId == Meteor.userId();
 	},
 	getCurrentRoom: function () {
 		var roomData = Rooms.find({$or:[{users:{$in:[Meteor.userId()]}}, {owner:Meteor.userId()}]}).fetch();
-
-		if(roomData.length > 0)
+		
+		if(roomData.length > 0 )
 		{
-			return Rooms.findOne({"_id":roomData[0]._id}).users;
+			var result = Rooms.findOne({"_id":roomData[0]._id}).users;
+			return _.without(result, roomData[0].owner);
 		}else{
 			return false;
 		}
@@ -23,7 +34,12 @@ Template.dialog_rooms.helpers({
 	}
 });
 Template.dialog_rooms.events({
-    'click .leave': function () {
-    	console.log($('.leave').data('leave'));
+    'click .leave': function (event, temp) {
+    	Meteor.call('removeRooms', $('.leave').data('leave'), Meteor.userId());
+    },
+    'click .begin': function (event, temp) {
+    	//鎖owner才可以開
+
+    	Meteor.call('beginRooms', $('.begin').data('begin'));
     }
 });

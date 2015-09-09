@@ -17,6 +17,9 @@ Template.room.helpers({
 	getCount: function () {
 		var i = 0;
 		return ++i;
+	},
+	isStatus: function ( inStatus ) {
+		return inStatus === "waitting";
 	}
 });
 
@@ -28,5 +31,8 @@ Template.room.events({
     	{
     		console.log('已經有局了');
     	}
+    },
+    'click .joinroom': function () {
+    	Meteor.call('joinRooms', $('.joinroom').data('join'), Meteor.userId());
     }
 });
