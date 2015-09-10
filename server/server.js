@@ -1,5 +1,7 @@
 if (Meteor.isServer) {
 
+	var percentObj = {};
+
 	Meteor.publish('users', function(){
 	    return Meteor.users.find();
 	});
@@ -64,7 +66,7 @@ if (Meteor.isServer) {
 		beginRooms:function( inRoomId ){
 
     		try{
-    			Rooms.update({ "_id" : inRoomId }, { "$set" : {"status" : "begin"}});
+    			Rooms.update({ "_id" : inRoomId, $where: '(this.users.length > 1)' }, { "$set" : {"status" : "begin"}});
     		}catch(exception){
     			return exception;
     		}
@@ -84,6 +86,35 @@ if (Meteor.isServer) {
     		}catch(exception){
     			return exception;
     		}
+		},
+		addPercent:function( inRoomId ){
+
+			if(Rooms.find({_id: this._id, status: 'stop' }).fetch().length > 0)return false;
+
+			if(percentObj.hasOwnProperty(Meteor.userId()))
+			{
+				if(percentObj[Meteor.userId()] >= 100)
+				{
+					try{
+		    			Rooms.update({ "_id" : inRoomId }, { "$set" : {"status" : "stop", "winer": Meteor.user().username}});
+		    		}catch(exception){
+		    			return exception;
+		    		}
+				}else{
+					percentObj[Meteor.userId()] += 1;
+				}
+			}else{
+				percentObj[Meteor.userId()] = 1;
+			}
+    		try{
+    			Meteor.users.update({ "_id" : Meteor.userId() }, { "$set" : {"profile.percent" : percentObj[Meteor.userId()]}});
+    		}catch(exception){
+    			return exception;
+    		}
+		},
+		resetPercent:function(){
+			percentObj[Meteor.userId()] = 0;
+			Meteor.users.update({ "_id" : Meteor.userId() }, { "$set" : {"profile.percent" : percentObj[Meteor.userId()]}});
 		}
 	});
 }

@@ -1,18 +1,50 @@
 
 <template name="game">
-    {{#each getData}}
-        <div class="row">
-            <div class="col-md-9">
-                <label>{{username}}</label>
-                <div class="monster {{profile.status}}" id="{{_id}}"></div>
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="{{profile.percent}}"
-                        aria-valuemin="0" aria-valuemax="100" style="width:{{profile.percent}}%">
-                        {{profile.percent}}%
-                    </div>
-                </div>
-            </div>
-        </div>
-    {{/each}}
-	<div class="display"></div>
+	{{#if Template.subscriptionsReady}}
+	    {{#each getData}}
+	        <div class="row">
+	            <div class="col-md-9">
+	                <label>{{username}}</label>
+	                <div class="monster {{profile.status}}" id="{{_id}}"></div>
+	                <div class="progress">
+	                    <div class="progress-bar" role="progressbar" aria-valuenow="{{profile.percent}}"
+	                        aria-valuemin="0" aria-valuemax="100" style="width:{{profile.percent}}%">
+	                        {{profile.percent}}%
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    {{/each}}
+		<div class="display"></div>
+		{{#if isDialog}}
+	    <div class="modal fade in" style="display: block;">
+	        <div class="modal-dialog">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h4 class="modal-title">結束</h4>
+	                </div>
+	                <div class="modal-body">
+	                    優勝者:  {{isDialog.[0].winer}}
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" class="btn btn-danger leave" data-leave="{{isDialog.[0]._id}}">離開</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="modal-backdrop fade in"></div>
+	    {{/if}}
+		{{#if isBegin}}
+	    <div class="modal fade in" style="display: block;">
+	        <div class="modal-dialog block-ui-container">
+	            <div class="block-ui-message-container">
+	            	<div class="block-ui-message ng-binding">{{isBegin}}</div>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="modal-backdrop fade in"></div>
+	    {{/if}}
+	{{else}}
+		<div>Loading...</div>
+    {{/if}}
 </template>

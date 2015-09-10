@@ -2,11 +2,17 @@ Template.dialog_rooms.helpers({
 	isDialog: function () {
 		var result = Rooms.find({$or:[{users:{$in:[Meteor.userId()]}}, {owner:Meteor.userId()}]}).fetch();
 		// console.log(result.length > 0 && result[0].status == "begin");
-		if(result.length > 0 && result[0].status == "begin")
+		// 
+		if(result.length > 0)
 		{
-			Router.go( 'game', { _id: result[0]._id} );
-		}else{
-			return result;
+			switch(result[0].status){
+				case "begin":
+					Router.go( 'game', { _id: result[0]._id} );
+				break;
+				case "waitting":
+					return result;
+				break;
+			}
 		}
 	},
 	isOwner: function ( inOwnerId ) {

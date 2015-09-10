@@ -26,6 +26,7 @@ Template.room.helpers({
 Template.room.events({
     'click #newroom': function () {
 	    var name = $('[data="roomname"]').val();
+    	if(name.length <= 0)return false;
     	
     	if(!Meteor.call('addRooms', name))
     	{
